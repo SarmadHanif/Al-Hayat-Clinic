@@ -133,13 +133,99 @@ body {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9)),
-                url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1931&h=1000') center/cover;
     color: white;
     padding: 120px 0 80px;
     text-align: center;
     position: relative;
     overflow: hidden;
+    height: 100vh;
+    min-height: 600px;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.hero-slide.active {
+    opacity: 1;
+}
+
+.hero-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(44, 90, 160, 0.4), rgba(118, 75, 162, 0.3));
+    z-index: 1;
+}
+
+/* Individual slide backgrounds - Custom Women's Health Images */
+.hero-slide:nth-child(1) {
+    background-image: url('https://www.bmj.com/careers/getasset/d9f32571-1be4-4eee-9b5b-c96dd5bc0fff/');
+}
+
+.hero-slide:nth-child(2) {
+    background-image: url('https://www.wonderbaby.org/wp-content/uploads/2023/12/Mother-with-her-cute-baby-visiting-pediatrician-in-clinic.jpg');
+}
+
+.hero-slide:nth-child(3) {
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5hryxS03rRpzD3iy_jYvI3nc8aRl1qIrLY790Ef4iqxLzpL5TXHvAyTI0TUnL7unA474&usqp=CAU');
+}
+
+.hero-slide:nth-child(4) {
+    background-image: url('https://www.homage.com.my/wp-content/uploads/sites/2/2021/02/bigstock-Close-Up-Of-A-Doctor-Making-A-367917184.jpg');
+}
+
+.hero-slide:nth-child(5) {
+    background-image: url('https://www.bmj.com/careers/getasset/d9f32571-1be4-4eee-9b5b-c96dd5bc0fff/');
+}
+
+/* Hero indicators */
+.hero-indicators {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.indicator.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+.indicator:hover {
+    background: rgba(255, 255, 255, 0.8);
 }
 
 .hero::before {
