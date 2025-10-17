@@ -23,6 +23,7 @@ body {
     line-height: 1.6;
     color: var(--text-dark);
     overflow-x: hidden;
+    background: var(--bg-light);
 }
 
 /* Header & Navigation */
@@ -30,11 +31,12 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(10, 10, 10, 0.85);
+    background: #0A0A0A;
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 20px rgba(0,0,0,0.1);
     z-index: 1000;
     transition: var(--transition);
+    border-bottom: 1px solid #3D3D3D;
 }
 
 .nav-container {
