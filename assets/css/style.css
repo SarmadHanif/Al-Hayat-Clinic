@@ -832,6 +832,37 @@ body {
     background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
 }
 
+.social-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.social-icon {
+    display: inline-flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+}
+
+.social-icon:hover {
+    transform: translateY(-2px) scale(1.05);
+    background: linear-gradient(135deg, var(--accent-color), var(--primary-color));
+}
+
+.social-icon i {
+    font-size: 1.2rem;
+}
+
 /* Mobile Menu */
 .mobile-menu-toggle {
     display: none;
@@ -859,6 +890,11 @@ body {
 
     .hero h1 {
         font-size: 2.5rem;
+    }
+
+    /* Ensure hero content clears the fixed header on small screens */
+    .hero {
+        padding-top: 160px;
     }
 
     .hero .subtitle {
