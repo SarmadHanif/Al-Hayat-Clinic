@@ -139,22 +139,33 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Typing effect for hero title
-    const heroTitle = document.querySelector('.hero h1');
-    if (heroTitle) {
-        const originalText = heroTitle.textContent;
-        heroTitle.textContent = '';
-        
+    // Typing effect for hero title (runs after language is applied)
+    let heroTypingTimeout = null;
+    function startHeroTyping(delay = 600) {
+        const titleEl = document.querySelector('.hero h1');
+        if (!titleEl) return;
+
+        // Determine target text based on current language attribute
+        const isUrdu = document.documentElement.getAttribute('lang') === 'ur';
+        const targetText = titleEl.getAttribute(isUrdu ? 'data-i18n-ur' : 'data-i18n-en') || titleEl.textContent;
+
+        // Clear any ongoing typing
+        if (heroTypingTimeout) {
+            clearTimeout(heroTypingTimeout);
+            heroTypingTimeout = null;
+        }
+
+        // Reset content and type
+        titleEl.textContent = '';
         let i = 0;
-        const typeWriter = () => {
-            if (i < originalText.length) {
-                heroTitle.textContent += originalText.charAt(i);
+        const typeStep = () => {
+            if (i < targetText.length) {
+                titleEl.textContent += targetText.charAt(i);
                 i++;
-                setTimeout(typeWriter, 100);
+                heroTypingTimeout = setTimeout(typeStep, 80);
             }
         };
-        
-        setTimeout(typeWriter, 1000);
+        heroTypingTimeout = setTimeout(typeStep, delay);
     }
 
     // Parallax effect for background images
@@ -264,12 +275,16 @@ document.addEventListener('DOMContentLoaded', function() {
     function setLanguage(lang) {
         localStorage.setItem('site_lang', lang);
         applyLanguage(lang);
+        // Restart typing effect for the new language
+        startHeroTyping(200);
     }
 
     // Init language from storage or browser preference
     const savedLang = localStorage.getItem('site_lang');
     const initialLang = savedLang || (navigator.language && navigator.language.startsWith('ur') ? 'ur' : 'en');
     applyLanguage(initialLang);
+    // Start typing after language has been applied
+    startHeroTyping(600);
 
     // Bind header buttons
     langButtons.forEach(btn => {
