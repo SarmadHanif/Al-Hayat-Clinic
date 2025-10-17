@@ -1,10 +1,10 @@
 :root {
-    --primary-color: #2c5aa0;
-    --secondary-color: #4a90e2;
-    --accent-color: #00c851;
-    --text-dark: #2c3e50;
-    --text-light: #7f8c8d;
-    --bg-light: #f8f9fa;
+    --primary-color: #D73D80;
+    --secondary-color: #8A1A4A;
+    --accent-color: #FC75AF;
+    --text-dark: #E8E8E8;
+    --text-light: #B7B5B5;
+    --bg-light: #0A0A0A;
     --white: #ffffff;
     --shadow: 0 10px 30px rgba(0,0,0,0.1);
     --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
@@ -30,7 +30,7 @@ body {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(10, 10, 10, 0.85);
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 20px rgba(0,0,0,0.1);
     z-index: 1000;
@@ -74,6 +74,7 @@ body {
     font-size: 1.8rem;
     color: var(--primary-color);
     font-weight: 700;
+    font-family: 'Sora', 'Titillium Web', 'Noto Nastaliq Urdu', sans-serif;
 }
 
 .logo-text p {
@@ -174,7 +175,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, rgba(44, 90, 160, 0.4), rgba(118, 75, 162, 0.3));
+    background: linear-gradient(135deg, rgba(215, 61, 128, 0.35), rgba(138, 26, 74, 0.25));
     z-index: 1;
 }
 
@@ -196,7 +197,7 @@ body {
 }
 
 .hero-slide:nth-child(5) {
-    background-image: url('https://www.bmj.com/careers/getasset/d9f32571-1be4-4eee-9b5b-c96dd5bc0fff/');
+    background-image: url('https://m.media-amazon.com/images/I/51BVaLWnQ8L._UF894,1000_QL80_.jpg');
 }
 
 /* Hero indicators */
@@ -258,6 +259,7 @@ body {
     margin-bottom: 1rem;
     font-weight: 700;
     animation: slideInDown 1s ease-out;
+    font-family: 'Sora', 'Titillium Web', 'Noto Nastaliq Urdu', sans-serif;
 }
 
 @keyframes slideInDown {
@@ -315,6 +317,7 @@ body {
     gap: 0.5rem;
     position: relative;
     overflow: hidden;
+    font-family: 'Sora', 'Titillium Web', 'Noto Nastaliq Urdu', sans-serif;
 }
 
 .btn-primary::before, .btn-secondary::before {
@@ -387,6 +390,7 @@ body {
     margin-bottom: 1rem;
     font-weight: 700;
     position: relative;
+    font-family: 'Sora', 'Titillium Web', 'Noto Nastaliq Urdu', sans-serif;
 }
 
 .section-header h2::after {
@@ -416,7 +420,7 @@ body {
 }
 
 .service-card {
-    background: white;
+    background: #1C222A;
     padding: 2rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
@@ -491,7 +495,7 @@ body {
 /* About Section */
 .about {
     padding: 80px 0;
-    background: white;
+    background: var(--bg-light);
     position: relative;
 }
 
@@ -644,7 +648,7 @@ body {
 /* Contact Section */
 .contact {
     padding: 80px 0;
-    background: linear-gradient(135deg, var(--bg-light), #e8f4fd);
+    background: linear-gradient(135deg, #0A0A0A, #0E1015);
     position: relative;
 }
 
@@ -667,7 +671,7 @@ body {
 }
 
 .contact-info {
-    background: white;
+    background: #1C222A;
     padding: 2rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
@@ -709,7 +713,7 @@ body {
 }
 
 .timing-card {
-    background: white;
+    background: #1C222A;
     padding: 2rem;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
@@ -775,7 +779,7 @@ body {
 
 /* Footer */
 .footer {
-    background: var(--text-dark);
+    background: #0A0A0A;
     color: white;
     padding: 2rem 0;
     text-align: center;
