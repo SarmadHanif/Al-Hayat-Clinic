@@ -68,6 +68,36 @@ body {
     align-items: center;
 }
 
+/* Language switcher */
+.lang-toggle {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.lang-btn {
+    padding: 0.4rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid var(--alvara-border);
+    background: #1C222A;
+    color: var(--alvara-alt-text);
+    cursor: pointer;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.lang-btn.active,
+.lang-btn[aria-pressed="true"] {
+    background: var(--gradient-pink);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: var(--shadow);
+}
+
+.lang-btn:hover {
+    transform: translateY(-2px);
+}
+
 .logo {
     display: flex;
     align-items: center;
@@ -830,6 +860,39 @@ body {
     right: 0;
     height: 3px;
     background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+}
+
+/* RTL adjustments when Urdu is active */
+body.rtl {
+    font-family: 'Noto Nastaliq Urdu', 'Titillium Web', sans-serif;
+    direction: rtl;
+}
+
+body.rtl .nav-container {
+    flex-direction: row-reverse;
+}
+
+body.rtl .nav-menu {
+    flex-direction: row-reverse;
+}
+
+body.rtl .section-header,
+body.rtl .about-text,
+body.rtl .contact-info,
+body.rtl .timing-card {
+    text-align: right;
+}
+
+body.rtl .features-list li {
+    flex-direction: row-reverse;
+}
+
+body.rtl .contact-item {
+    flex-direction: row-reverse;
+}
+
+body.rtl .service-card {
+    text-align: right;
 }
 
 .social-links {

@@ -234,6 +234,50 @@ document.addEventListener('DOMContentLoaded', function() {
         const scrollPercent = (scrollTop / docHeight) * 100;
         progressBar.style.width = scrollPercent + '%';
     });
+
+    // Language switcher: EN / UR
+    const rootEl = document.documentElement;
+    const langButtons = document.querySelectorAll('.lang-btn');
+
+    function applyLanguage(lang) {
+        const i18nNodes = document.querySelectorAll('[data-i18n-en]');
+        i18nNodes.forEach(node => {
+            const text = node.getAttribute(lang === 'ur' ? 'data-i18n-ur' : 'data-i18n-en');
+            if (typeof text === 'string' && text.length) {
+                node.textContent = text;
+            }
+        });
+
+        // Direction and lang on <html>
+        rootEl.setAttribute('lang', lang === 'ur' ? 'ur' : 'en');
+        rootEl.setAttribute('dir', lang === 'ur' ? 'rtl' : 'ltr');
+        document.body.classList.toggle('rtl', lang === 'ur');
+
+        // Toggle button states
+        langButtons.forEach(btn => {
+            const isActive = btn.getAttribute('data-lang') === lang;
+            btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            btn.classList.toggle('active', isActive);
+        });
+    }
+
+    function setLanguage(lang) {
+        localStorage.setItem('site_lang', lang);
+        applyLanguage(lang);
+    }
+
+    // Init language from storage or browser preference
+    const savedLang = localStorage.getItem('site_lang');
+    const initialLang = savedLang || (navigator.language && navigator.language.startsWith('ur') ? 'ur' : 'en');
+    applyLanguage(initialLang);
+
+    // Bind header buttons
+    langButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const lang = btn.getAttribute('data-lang') === 'ur' ? 'ur' : 'en';
+            setLanguage(lang);
+        });
+    });
 });
 
 // Add CSS for ripple animation
