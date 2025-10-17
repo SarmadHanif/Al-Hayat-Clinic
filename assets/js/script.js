@@ -81,11 +81,13 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', () => {
         const header = document.querySelector('.header');
         if (window.scrollY > 100) {
-            header.style.background = 'rgba(255, 255, 255, 0.98)';
-            header.style.boxShadow = '0 2px 30px rgba(0,0,0,0.15)';
+            header.style.background = 'rgba(10, 10, 10, 0.95)';
+            header.style.boxShadow = '0 2px 30px rgba(0,0,0,0.5)';
+            header.style.borderBottom = '1px solid #3D3D3D';
         } else {
-            header.style.background = 'rgba(255, 255, 255, 0.95)';
-            header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+            header.style.background = 'rgba(10, 10, 10, 0.85)';
+            header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.4)';
+            header.style.borderBottom = '1px solid #3D3D3D';
         }
     });
 
@@ -221,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
     progressBar.style.left = '0';
     progressBar.style.width = '0%';
     progressBar.style.height = '3px';
-    progressBar.style.background = 'linear-gradient(90deg, #2c5aa0, #00c851)';
+    progressBar.style.background = 'linear-gradient(90deg, #D73D80, #FC75AF)';
     progressBar.style.zIndex = '9999';
     progressBar.style.transition = 'width 0.3s ease';
     document.body.appendChild(progressBar);
@@ -270,8 +272,8 @@ style.textContent = `
         top: 100%;
         left: 0;
         right: 0;
-        background: white;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        background: #1C222A;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.4);
         padding: 1rem;
         border-radius: 0 0 12px 12px;
     }
