@@ -1219,15 +1219,36 @@ html {
     transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     border: 2px solid rgba(255,255,255,0.15);
     backdrop-filter: blur(6px);
+    /* Use CSS variables so hover and animation can both affect transform */
+    transform: translateY(var(--ty, 0)) scale(var(--sc, 1));
+    will-change: transform;
 }
 
 .float-btn i { font-size: 1.3rem; }
 
-.float-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 14px 30px rgba(0,0,0,0.35); filter: brightness(1.05); }
+.float-btn:hover { --ty: -3px; --sc: 1.05; box-shadow: 0 14px 30px rgba(0,0,0,0.35); filter: brightness(1.05); }
 
 .float-btn.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
 .float-btn.facebook { background: linear-gradient(135deg, #1877F2, #0d47a1); }
 .float-btn.instagram { background: linear-gradient(135deg, #F58529, #DD2A7B 60%, #515BD4); }
+
+/* Sequential pulse animation */
+@keyframes float-pulse {
+    0%, 100% { --sc: 1; }
+    50% { --sc: 1.28; }
+}
+
+.floating-social .float-btn { animation: float-pulse 3.6s ease-in-out infinite; }
+.floating-social .float-btn.facebook { animation-delay: 0.6s; }
+.floating-social .float-btn.instagram { animation-delay: 1.2s; }
+
+/* Pause pulse on hover for better control */
+.floating-social .float-btn:hover { animation-play-state: paused; }
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .floating-social .float-btn { animation: none; }
+}
 
 /* Keep accessible spacing on small screens */
 @media (max-width: 768px) {

@@ -139,33 +139,57 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Typing effect for hero title (runs after language is applied)
-    let heroTypingTimeout = null;
+    let heroTypingTimers = [];
+    function clearHeroTyping() {
+        heroTypingTimers.forEach(t => clearTimeout(t));
+        heroTypingTimers = [];
+    }
     function startHeroTyping(delay = 600) {
         const titleEl = document.querySelector('.hero h1');
         if (!titleEl) return;
+        clearHeroTyping();
 
-        // Determine target text based on current language attribute
         const isUrdu = document.documentElement.getAttribute('lang') === 'ur';
-        const targetText = titleEl.getAttribute(isUrdu ? 'data-i18n-ur' : 'data-i18n-en') || titleEl.textContent;
+        const primary = titleEl.getAttribute(isUrdu ? 'data-i18n-ur' : 'data-i18n-en') || titleEl.textContent;
+        const alternate = titleEl.getAttribute(isUrdu ? 'data-i18n-ur-alt' : 'data-i18n-en-alt');
+        const phrases = alternate ? [primary, alternate] : [primary];
 
-        // Clear any ongoing typing
-        if (heroTypingTimeout) {
-            clearTimeout(heroTypingTimeout);
-            heroTypingTimeout = null;
-        }
-
-        // Reset content and type
-        titleEl.textContent = '';
-        let i = 0;
-        const typeStep = () => {
-            if (i < targetText.length) {
-                titleEl.textContent += targetText.charAt(i);
-                i++;
-                heroTypingTimeout = setTimeout(typeStep, 80);
+        let phraseIndex = 0;
+        function typePhrase(text, onDone) {
+            titleEl.textContent = '';
+            let i = 0;
+            function step() {
+                if (i < text.length) {
+                    titleEl.textContent += text.charAt(i++);
+                    heroTypingTimers.push(setTimeout(step, 70));
+                } else if (onDone) {
+                    heroTypingTimers.push(setTimeout(onDone, 1200));
+                }
             }
-        };
-        heroTypingTimeout = setTimeout(typeStep, delay);
+            heroTypingTimers.push(setTimeout(step, delay));
+        }
+        function erasePhrase(onDone) {
+            const text = titleEl.textContent;
+            let i = text.length;
+            function step() {
+                if (i > 0) {
+                    titleEl.textContent = text.slice(0, --i);
+                    heroTypingTimers.push(setTimeout(step, 35));
+                } else if (onDone) {
+                    onDone();
+                }
+            }
+            heroTypingTimers.push(setTimeout(step, 400));
+        }
+        function loop() {
+            const text = phrases[phraseIndex % phrases.length];
+            typePhrase(text, () => erasePhrase(() => {
+                phraseIndex++;
+                delay = 200;
+                loop();
+            }));
+        }
+        loop();
     }
 
     // Parallax effect for background images
@@ -225,6 +249,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, index * 100);
             });
         }, 500);
+
+        // One-time celebration confetti on first load
+        try {
+            const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const alreadyCelebrated = sessionStorage.getItem('site_celebrated') === '1';
+            if (!prefersReduced && !alreadyCelebrated) {
+                sessionStorage.setItem('site_celebrated', '1');
+                launchConfetti(4000);
+            }
+        } catch (_) { /* ignore */ }
     });
 
     // Add scroll progress indicator
@@ -352,3 +386,68 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Lightweight canvas confetti
+function launchConfetti(durationMs = 4000) {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.style.position = 'fixed';
+    canvas.style.inset = '0';
+    canvas.style.zIndex = '9998';
+    canvas.style.pointerEvents = 'none';
+    document.body.appendChild(canvas);
+
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+    const onResize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+    window.addEventListener('resize', onResize);
+
+    const colors = ['#D73D80', '#FC75AF', '#25D366', '#1877F2', '#F58529', '#DD2A7B', '#ffffff'];
+    const count = Math.min(220, Math.floor(W / 6));
+    const gravity = 0.25;
+    const drag = 0.003;
+    const terminal = 6;
+
+    const rand = (min, max) => Math.random() * (max - min) + min;
+    const confetti = Array.from({ length: count }).map(() => ({
+        x: rand(0, W), y: rand(-H, 0), w: rand(6, 12), h: rand(8, 18),
+        color: colors[(Math.random() * colors.length) | 0],
+        tilt: rand(-0.5, 0.5), angle: rand(0, Math.PI * 2),
+        vx: rand(-2, 2), vy: rand(1, 3), rot: rand(-0.08, 0.08)
+    }));
+
+    const start = performance.now();
+    let rafId;
+    function frame(ts) {
+        const elapsed = ts - start;
+        ctx.clearRect(0, 0, W, H);
+        confetti.forEach(p => {
+            p.vy = Math.min(p.vy + gravity, terminal);
+            p.vx += (Math.random() - 0.5) * 0.15;
+            p.x += p.vx * (1 - drag);
+            p.y += p.vy * (1 - drag);
+            p.angle += p.rot;
+            p.tilt += Math.sin(p.angle) * 0.2;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.angle);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = 0.9;
+            ctx.fillRect(-p.w / 2 + p.tilt, -p.h / 2, p.w, p.h);
+            ctx.restore();
+
+            // recycle when out of view
+            if (p.y - 20 > H) { p.y = -10; p.x = rand(0, W); p.vy = rand(1, 3); p.vx = rand(-2, 2); }
+        });
+
+        if (elapsed < durationMs) {
+            rafId = requestAnimationFrame(frame);
+        } else {
+            cancelAnimationFrame(rafId);
+            window.removeEventListener('resize', onResize);
+            canvas.remove();
+        }
+    }
+    rafId = requestAnimationFrame(frame);
+}
