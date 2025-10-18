@@ -1190,19 +1190,20 @@ html {
 /* Floating Social Bar */
 .floating-social {
     position: fixed;
-    right: 16px;
+    left: 50%;
     bottom: 16px;
+    transform: translateX(-50%);
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-direction: row;
+    gap: 12px;
     z-index: 10000;
     animation: float-drop-in 700ms ease-out both;
 }
 
 @keyframes float-drop-in {
-    0% { transform: translateY(-40px); opacity: 0; }
-    60% { transform: translateY(8px); opacity: 1; }
-    100% { transform: translateY(0); }
+    0% { transform: translate(-50%, -40px); opacity: 0; }
+    60% { transform: translate(-50%, 8px); opacity: 1; }
+    100% { transform: translate(-50%, 0); }
 }
 
 .float-btn {
@@ -1230,10 +1231,9 @@ html {
 
 /* Keep accessible spacing on small screens */
 @media (max-width: 768px) {
-    .floating-social { right: 12px; bottom: 12px; gap: 8px; }
+    .floating-social { left: 50%; bottom: 12px; gap: 10px; transform: translateX(-50%); }
     .float-btn { width: 46px; height: 46px; }
 }
 
 /* RTL: move to bottom-left */
-body.rtl .floating-social { right: auto; left: 16px; }
-@media (max-width: 768px) { body.rtl .floating-social { left: 12px; } }
+/* Centered position works for both LTR and RTL; no override needed */
