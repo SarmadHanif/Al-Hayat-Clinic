@@ -1186,3 +1186,54 @@ html {
 .interactive-bg:hover::before {
     opacity: 1;
 }
+
+/* Floating Social Bar */
+.floating-social {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 10000;
+    animation: float-drop-in 700ms ease-out both;
+}
+
+@keyframes float-drop-in {
+    0% { transform: translateY(-40px); opacity: 0; }
+    60% { transform: translateY(8px); opacity: 1; }
+    100% { transform: translateY(0); }
+}
+
+.float-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    border: 2px solid rgba(255,255,255,0.15);
+    backdrop-filter: blur(6px);
+}
+
+.float-btn i { font-size: 1.3rem; }
+
+.float-btn:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 14px 30px rgba(0,0,0,0.35); filter: brightness(1.05); }
+
+.float-btn.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
+.float-btn.facebook { background: linear-gradient(135deg, #1877F2, #0d47a1); }
+.float-btn.instagram { background: linear-gradient(135deg, #F58529, #DD2A7B 60%, #515BD4); }
+
+/* Keep accessible spacing on small screens */
+@media (max-width: 768px) {
+    .floating-social { right: 12px; bottom: 12px; gap: 8px; }
+    .float-btn { width: 46px; height: 46px; }
+}
+
+/* RTL: move to bottom-left */
+body.rtl .floating-social { right: auto; left: 16px; }
+@media (max-width: 768px) { body.rtl .floating-social { left: 12px; } }
