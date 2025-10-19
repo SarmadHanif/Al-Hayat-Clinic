@@ -1231,6 +1231,24 @@ html {
 .float-btn.whatsapp { background: linear-gradient(135deg, #25D366, #128C7E); }
 .float-btn.facebook { background: linear-gradient(135deg, #1877F2, #0d47a1); }
 .float-btn.instagram { background: linear-gradient(135deg, #F58529, #DD2A7B 60%, #515BD4); }
+/* Google Maps brand-like theme */
+.float-btn.maps {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+}
+.float-btn.maps img {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: block;
+}
+.float-btn.maps:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
 
 /* Sequential pulse animation */
 @keyframes float-pulse {
@@ -1239,8 +1257,9 @@ html {
 }
 
 .floating-social .float-btn { animation: float-pulse 3.6s ease-in-out infinite; }
-.floating-social .float-btn.facebook { animation-delay: 0.6s; }
-.floating-social .float-btn.instagram { animation-delay: 1.2s; }
+.floating-social .float-btn.whatsapp { animation-delay: 0.6s; }
+.floating-social .float-btn.facebook { animation-delay: 1.2s; }
+.floating-social .float-btn.instagram { animation-delay: 1.8s; }
 
 /* Pause pulse on hover for better control */
 .floating-social .float-btn:hover { animation-play-state: paused; }

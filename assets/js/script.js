@@ -313,9 +313,9 @@ document.addEventListener('DOMContentLoaded', function() {
         startHeroTyping(200);
     }
 
-    // Init language from storage or browser preference
+    // Init language: default to Urdu unless user previously chose otherwise
     const savedLang = localStorage.getItem('site_lang');
-    const initialLang = savedLang || (navigator.language && navigator.language.startsWith('ur') ? 'ur' : 'en');
+    const initialLang = savedLang || 'ur';
     applyLanguage(initialLang);
     // Start typing after language has been applied
     startHeroTyping(600);
