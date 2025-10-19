@@ -1200,6 +1200,13 @@ html {
     animation: float-drop-in 700ms ease-out both;
 }
 
+/* Ensure any image-based icons inside the floating bar never overflow */
+.floating-social img {
+    width: 46px;
+    height: 46px;
+    display: block;
+}
+
 @keyframes float-drop-in {
     0% { transform: translate(-50%, -40px); opacity: 0; }
     60% { transform: translate(-50%, 8px); opacity: 1; }
