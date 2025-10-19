@@ -307,14 +307,29 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function setLanguage(lang) {
+        // persist in new versioned key to avoid old cached preferences
+        localStorage.setItem('site_lang_v2', lang);
+        // keep old key in sync for safety
         localStorage.setItem('site_lang', lang);
         applyLanguage(lang);
         // Restart typing effect for the new language
         startHeroTyping(200);
     }
 
-    // Init language: default to Urdu unless user previously chose otherwise
-    const savedLang = localStorage.getItem('site_lang');
+    // Init language with migration: new key defaults to Urdu
+    let savedLang = localStorage.getItem('site_lang_v2');
+    if (!savedLang) {
+        const old = localStorage.getItem('site_lang');
+        if (old === 'ur') {
+            localStorage.setItem('site_lang_v2', 'ur');
+            savedLang = 'ur';
+        } else {
+            // Force-persist Urdu as the brand default for first-time visitors
+            localStorage.setItem('site_lang_v2', 'ur');
+            localStorage.setItem('site_lang', 'ur');
+            savedLang = 'ur';
+        }
+    }
     const initialLang = savedLang || 'ur';
     applyLanguage(initialLang);
     // Start typing after language has been applied
