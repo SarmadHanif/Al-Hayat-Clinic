@@ -984,7 +984,7 @@ body.rtl .director-info {
 
 .team-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
     align-items: stretch;
 }
@@ -1052,12 +1052,15 @@ body.rtl .provider-info { text-align: right; }
     .director-info { text-align: center; }
     body.rtl .director-info { text-align: center; }
     .director-photo { margin: 0 auto; }
-
-    .team-grid { grid-template-columns: 1fr; }
     .provider-card { grid-template-columns: 1fr; text-align: center; }
     .provider-info { text-align: center; }
     body.rtl .provider-info { text-align: center; }
     .provider-photo { margin: 0 auto; }
+}
+
+/* Stack team grid on smaller screens */
+@media (max-width: 768px) {
+    .team-grid { grid-template-columns: 1fr; }
 }
 
 /* RTL adjustments when Urdu is active */
