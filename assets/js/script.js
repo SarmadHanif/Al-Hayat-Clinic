@@ -342,6 +342,35 @@ document.addEventListener('DOMContentLoaded', function() {
             setLanguage(lang);
         });
     });
+
+    // Simple website view counter (CountAPI)
+    (function() {
+        const el = document.getElementById('viewCount');
+        if (!el) return;
+
+        const NAMESPACE = 'alhayathealthcare.site'; // make sure this is unique
+        const KEY = 'site_views_v1';                // bump suffix if you ever want to reset
+
+        const getUrl = `https://api.countapi.xyz/get/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(KEY)}`;
+        const hitUrl = `https://api.countapi.xyz/hit/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(KEY)}`;
+
+        function updateFrom(url) {
+            fetch(url)
+                .then(r => r.json())
+                .then(d => {
+                    const val = (d && typeof d.value === 'number') ? d.value : 0;
+                    el.textContent = val.toLocaleString();
+                })
+                .catch(() => { /* ignore */ });
+        }
+
+        if (sessionStorage.getItem('site_viewed') === '1') {
+            updateFrom(getUrl); // read only if already counted this session
+        } else {
+            updateFrom(hitUrl); // increment and read
+            sessionStorage.setItem('site_viewed', '1');
+        }
+    })();
 });
 
 // Add CSS for ripple animation

@@ -586,8 +586,8 @@ body {
     right: 0;
     width: 50%;
     height: 100%;
-    background: url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover;
-    opacity: 0.05;
+    background: none;
+    opacity: 0;
     z-index: 0;
 }
 
@@ -690,10 +690,11 @@ body {
 }
 
 .doctor-image {
-    width: 150px;
-    height: 150px;
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-    border-radius: 50%;
+    width: 100%;
+    max-width: 380px;
+    height: 420px;
+    background: none;
+    border-radius: 16px;
     margin: 0 auto 1.5rem;
     display: flex;
     align-items: center;
@@ -729,8 +730,8 @@ body {
 
 /* Ensure the uploaded logo displays properly in the circular frame */
 .doctor-image img {
-    width: 92%;
-    height: 92%;
+    width: auto;
+    height: 100%;
     object-fit: contain;
     padding: 0;
     margin: auto;
@@ -739,10 +740,23 @@ body {
     display: block;
 }
 
+/* Small clinic logo inside doctor card */
+.clinic-logo-small {
+    display: flex;
+    justify-content: center;
+    margin: 0.25rem 0 0.75rem;
+}
+.clinic-logo-small img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    display: block;
+}
+
 /* Contact Section */
 .contact {
     padding: 80px 0;
-    background: linear-gradient(135deg, #0A0A0A, #0E1015);
+    background: #0A0A0A;
     position: relative;
 }
 
@@ -753,8 +767,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover;
-    opacity: 0.03;
+    background: none;
+    opacity: 0;
     z-index: 0;
 }
 
@@ -1117,6 +1131,9 @@ body.rtl .service-card {
     .nav-container {
         padding: 1rem;
     }
+
+    /* Make doctor image a bit shorter on small screens */
+    .doctor-image { height: 340px; max-width: 320px; }
 }
 
 /* Smooth scrolling */
