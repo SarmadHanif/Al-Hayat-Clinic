@@ -343,33 +343,69 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Simple website view counter (CountAPI)
+    // Simple website view counter (CountAPI) with robust fallbacks
     (function() {
         const el = document.getElementById('viewCount');
         if (!el) return;
 
-        const NAMESPACE = 'alhayathealthcare.site'; // make sure this is unique
-        const KEY = 'site_views_v1';                // bump suffix if you ever want to reset
+        const NAMESPACE = 'alhayathealthcare.site'; // ensure uniqueness
+        const KEY = 'site_views_v1';                // bump to reset remotely
 
         const getUrl = `https://api.countapi.xyz/get/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(KEY)}`;
         const hitUrl = `https://api.countapi.xyz/hit/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(KEY)}`;
 
-        function updateFrom(url) {
-            fetch(url)
-                .then(r => r.json())
-                .then(d => {
-                    const val = (d && typeof d.value === 'number') ? d.value : 0;
-                    el.textContent = val.toLocaleString();
-                })
-                .catch(() => { /* ignore */ });
+        function setNumber(n) {
+            el.textContent = Number(n).toLocaleString();
         }
 
-        if (sessionStorage.getItem('site_viewed') === '1') {
-            updateFrom(getUrl); // read only if already counted this session
-        } else {
-            updateFrom(hitUrl); // increment and read
-            sessionStorage.setItem('site_viewed', '1');
+        function localFallback(increment) {
+            try {
+                const k = 'local_view_count_v1';
+                let v = parseInt(localStorage.getItem(k) || '0', 10);
+                if (increment) v += 1;
+                localStorage.setItem(k, String(v));
+                setNumber(v);
+            } catch (_) {
+                // last resort
+                setNumber('0');
+            }
         }
+
+        function fetchJSON(url) {
+            return fetch(url, { cache: 'no-store' }).then(r => {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.json();
+            });
+        }
+
+        const alreadyCounted = sessionStorage.getItem('site_viewed') === '1';
+
+        if (alreadyCounted) {
+            // Just read current value
+            fetchJSON(getUrl)
+                .then(d => setNumber(d && d.value))
+                .catch(err => {
+                    console.warn('CountAPI get failed:', err);
+                    localFallback(false);
+                });
+            return;
+        }
+
+        // Try to hit (increment), then fall back to get, then local fallback
+        fetchJSON(hitUrl)
+            .then(d => {
+                setNumber(d && d.value);
+                sessionStorage.setItem('site_viewed', '1');
+            })
+            .catch(err => {
+                console.warn('CountAPI hit failed, falling back to get:', err);
+                fetchJSON(getUrl)
+                    .then(d => setNumber(d && d.value))
+                    .catch(err2 => {
+                        console.warn('CountAPI get failed, using local fallback:', err2);
+                        localFallback(true);
+                    });
+            });
     })();
 });
 
