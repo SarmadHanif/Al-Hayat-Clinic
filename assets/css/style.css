@@ -30,6 +30,7 @@
     --shadow-hover: 0 20px 40px rgba(0,0,0,0.15);
     --border-radius: 12px;
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --header-height: 80px;
 }
 
 /* Extra small devices: save space by hiding "Call Now" text but keep icon */
@@ -215,12 +216,13 @@ body {
 /* Hero Section */
 .hero {
     color: white;
-    padding: 120px 0 80px;
+    /* top padding accounts for fixed header */
+    padding: calc(var(--header-height) + 40px) 0 80px;
     text-align: center;
     position: relative;
     overflow: hidden;
-    height: 100vh;
-    min-height: 600px;
+    /* use small-viewport height to avoid URL bar issues on mobile */
+    min-height: calc(100svh - var(--header-height));
 }
 
 .hero-background {
@@ -1097,9 +1099,8 @@ body.rtl .service-card {
     }
 
     /* Ensure hero content clears the fixed header on small screens */
-    .hero {
-        padding-top: 160px;
-    }
+    /* Increase header height variable on small screens */
+    :root { --header-height: 110px; }
 
     .hero .subtitle {
         font-size: 1.1rem;
