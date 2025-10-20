@@ -1,3 +1,53 @@
+/* Alvara-style background: purple glow, concentric white lines, fade to black */
+.alvara-bg {
+    position: relative;
+    overflow: hidden;
+    /* base black with subtle purple glow from top */
+    background: radial-gradient(1200px 600px at 50% -10%, rgba(215,61,128,0.20), rgba(215,61,128,0.04) 45%, rgba(215,61,128,0) 70%),
+                #0A0A0A;
+}
+
+.alvara-bg::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    /* concentric lines */
+    background: repeating-radial-gradient(
+        circle at 50% 20%,
+        rgba(255,255,255,0.07) 0 1px,
+        transparent 1px 90px
+    );
+    /* fade lines toward edges */
+    -webkit-mask-image: radial-gradient(closest-side, rgba(0,0,0,1), rgba(0,0,0,0.0) 90%);
+    mask-image: radial-gradient(closest-side, rgba(0,0,0,1), rgba(0,0,0,0.0) 90%);
+    opacity: 0.7;
+    animation: alvara-slow-rotate 60s linear infinite;
+    z-index: -2;
+}
+
+.alvara-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* fade to black toward bottom */
+    background: linear-gradient(to bottom, rgba(10,10,10,0) 0%, rgba(10,10,10,0.4) 40%, rgba(10,10,10,0.8) 75%, rgba(10,10,10,1) 100%);
+    z-index: -1;
+}
+
+/* Keep section content above decorative layers */
+.alvara-bg > * { position: relative; z-index: 1; }
+
+/* Ensure hero overlay sits above decorative background but below content */
+.hero-background { z-index: 0; pointer-events: none; }
+
+@keyframes alvara-slow-rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .alvara-bg::before { animation: none; }
+}
 :root {
     --primary-color: #D73D80;
     --secondary-color: #8A1A4A;
@@ -441,6 +491,12 @@ body {
     position: relative;
 }
 
+/* When using the Alvara background on Services, override the plain background */
+.services.alvara-bg {
+    background: radial-gradient(1200px 600px at 50% -10%, rgba(215,61,128,0.20), rgba(215,61,128,0.04) 45%, rgba(215,61,128,0) 70%),
+                #0A0A0A;
+}
+
 .services::before {
     content: '';
     position: absolute;
@@ -600,23 +656,40 @@ body {
     align-items: center;
 }
 
+/* Keep About layout consistent in RTL: text left, card right */
+body.rtl .about-content { direction: ltr; }
+
+/* In RTL, keep text direction but center the heading and underline (Option A) */
+body.rtl .about-text { direction: rtl; text-align: center; }
+body.rtl .about-text h2 { display: inline-block; }
+
 .about-text h2 {
     font-size: 2.5rem;
     color: var(--primary-color);
     margin-bottom: 1.5rem;
     font-weight: 700;
     position: relative;
+    display: inline-block;
+    margin-inline: auto;
 }
 
 .about-text h2::after {
     content: '';
     position: absolute;
     bottom: -10px;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 60px;
     height: 3px;
     background: var(--accent-color);
     border-radius: 2px;
+}
+
+/* In RTL, align the underline with the right edge of the heading */
+body.rtl .about-text h2::after {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
 }
 
 .about-text p {
@@ -1083,6 +1156,9 @@ body.rtl .contact-info,
 body.rtl .timing-card {
     text-align: right;
 }
+
+/* Keep section headers centered in RTL so the underline stays aligned */
+body.rtl .section-header { text-align: center; }
 
 body.rtl .features-list li {
     flex-direction: row-reverse;
