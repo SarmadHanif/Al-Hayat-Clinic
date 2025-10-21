@@ -1,3 +1,20 @@
+    // Compute dynamic header height and expose as CSS var --header-offset
+    function updateHeaderOffset() {
+        try {
+            const header = document.querySelector('.header');
+            if (!header) return;
+            const h = Math.ceil(header.getBoundingClientRect().height);
+            document.documentElement.style.setProperty('--header-offset', `${h}px`);
+        } catch (_) { /* ignore */ }
+    }
+
+    // Initial and on resize (debounced)
+    updateHeaderOffset();
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(updateHeaderOffset, 120);
+    });
 // Hero Image Carousel
 let currentSlide = 0;
 const slides = document.querySelectorAll('.hero-slide');
@@ -211,6 +228,8 @@ document.addEventListener('DOMContentLoaded', function() {
         mobileToggle.addEventListener('click', () => {
             navMenu.classList.toggle('active');
             mobileToggle.classList.toggle('active');
+            // Recalculate header height when menu expands/collapses
+            setTimeout(updateHeaderOffset, 50);
         });
     }
 
@@ -240,6 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add loading animation
     window.addEventListener('load', () => {
         document.body.classList.add('loaded');
+        updateHeaderOffset();
         
         // Animate elements on load
         setTimeout(() => {
@@ -314,6 +334,8 @@ document.addEventListener('DOMContentLoaded', function() {
         applyLanguage(lang);
         // Restart typing effect for the new language
         startHeroTyping(200);
+        // Language changes can alter header height due to text width
+        setTimeout(updateHeaderOffset, 50);
     }
 
     // Init language with migration: new key defaults to Urdu
