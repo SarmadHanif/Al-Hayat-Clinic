@@ -1255,7 +1255,38 @@ body.rtl .service-card {
     /* Ensure hero content clears the fixed header on small screens */
     /* Increase header height variable on small screens */
     :root { --header-height: 110px; }
-    :root { --header-extra: 40px; }
+}
+
+/* Tablets and large phones: add a touch more breathing room for the title */
+@media (max-width: 1024px) {
+    :root { --header-extra: 56px; }
+    .hero h1 { margin-top: 8px; }
+}
+
+/* Compact viewports */
+@media (max-width: 900px) {
+    :root { --header-extra: 72px; }
+    .hero h1 { margin-top: 10px; }
+}
+
+@media (max-width: 600px) {
+    :root { --header-extra: 80px; }
+}
+
+@media (max-width: 480px) {
+    :root { --header-extra: 100px; }
+}
+
+/* Ultra-small phones: maximum breathing room */
+@media (max-width: 420px) {
+    :root { --header-extra: 112px; }
+    .hero h1 { margin-top: 12px; }
+}
+
+/* Very narrow devices: slightly smaller title */
+@media (max-width: 360px) {
+    .hero h1 { font-size: 2.2rem; }
+}
 
     .hero .subtitle {
         font-size: 1.1rem;
