@@ -7,6 +7,10 @@
             document.documentElement.style.setProperty('--header-offset', `${h}px`);
         } catch (_) { /* ignore */ }
     }
+// Global flag toggled by autoplay
+window.autoplayActive = false;
+
+// Autoplay/GSAP removed per user request
 
     // Initial and on resize (debounced)
     updateHeaderOffset();
@@ -42,7 +46,7 @@ function goToSlide(index) {
 }
 
 // Auto-rotate slides every 5 seconds
-setInterval(nextSlide, 5000);
+let heroCarouselInterval = setInterval(nextSlide, 5000);
 
 // Add click event listeners to indicators
 indicators.forEach((indicator, index) => {
@@ -170,6 +174,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const primary = titleEl.getAttribute(isUrdu ? 'data-i18n-ur' : 'data-i18n-en') || titleEl.textContent;
         const alternate = titleEl.getAttribute(isUrdu ? 'data-i18n-ur-alt' : 'data-i18n-en-alt');
         const phrases = alternate ? [primary, alternate] : [primary];
+
+        // If autoplay is active, set title immediately and skip typing loop
+        if (window.autoplayActive) {
+            titleEl.textContent = primary;
+            return;
+        }
 
         let phraseIndex = 0;
         function typePhrase(text, onDone) {
@@ -370,7 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const el = document.getElementById('viewCount');
         if (!el) return;
 
-        const NAMESPACE = 'alhayathealthcare.site'; // ensure uniqueness
+        const NAMESPACE = 'alhayat24.pk'; // live domain namespace
         const KEY = 'site_views_v1';                // bump to reset remotely
 
         const getUrl = `https://api.countapi.xyz/get/${encodeURIComponent(NAMESPACE)}/${encodeURIComponent(KEY)}`;
